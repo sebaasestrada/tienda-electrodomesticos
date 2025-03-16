@@ -3,9 +3,9 @@
 
 Una simple aplicación de microservicios de práctica con spring boot y spring cloud.
 -----------------------------------
-![alt text](netflix-eureka-server.png)
+![alt text](diagrams/png/netflix-eureka-server.png)
 -----------------------------------
-![alt text](diagrama-proyecto.png)
+![alt text](diagrams/png/diagrama-proyecto.png)
 -----------------------------------
-![alt text](diagrama-clases.png)
+![alt text](diagrams/png/diagrama-clases.png)
 -----------------------------------

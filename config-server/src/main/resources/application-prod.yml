@@ -1,0 +1,18 @@
+# server config
+server:
+  port: 8090
+
+# app config
+spring:
+  application:
+    name: config-server
+  # config server configuration
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/sebaasestrada/tienda-electrodomesticos.git
+          searchPaths: config-data
+          username: ${GIT_USERNAME}
+          password: ${GIT_PASSWORD}
+

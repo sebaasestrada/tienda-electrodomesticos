@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>es.sebaasestrada</groupId>
 	<artifactId>servicio-carrito-compras</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>servicio-carrito-compras</name>
 	<description>Servicio carrito compras.</description>
 	<url/>
