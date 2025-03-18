@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  eureka-server:
+    build: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - tienda-electrodomesticos
+
+  config-server:
+    build: config-server
+    ports:
+      - "8090:8090"
+    networks:
+      - tienda-electrodomesticos
+
+  api-gateway:
+    build: api-gateway
+    ports:
+      - "8443:8443"
+    networks:
+      - tienda-electrodomesticos
+
+  servicio-productos:
+    build: servicio-productos
+    ports:
+      - "8080:8080"
+    networks:
+      - tienda-electrodomesticos
+
+  servicio-carrito-compras:
+    build: servicio-carrito-compras
+    ports:
+      - "8084:8084"
+    networks:
+      - tienda-electrodomesticos
+
+  servicio_ventas:
+    build: servicio-ventas
+    ports:
+      - "8087:8087"
+    networks:
+      - tienda-electrodomesticos
+
+  db-productos:
+    image: mysql:latest
+    container_name: db-productos
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: test123@@
+      MYSQL_USER: juan.sanchez.regueiro
+      MYSQL_PASSWORD: test123@@
+      MYSQL_DATABASE: servicio-productos
+    volumes:
+      - db_productos_data:/var/lib/mysql
+    networks:
+      - tienda_electrodomesticos
+
+  db-carrito:
+    image: mysql:latest
+    container_name: db-carrito
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: test123@@
+      MYSQL_USER: juan.sanchez.regueiro
+      MYSQL_PASSWORD: test123@@
+      MYSQL_DATABASE: servicio-carrito-compras
+    volumes:
+      - db_carrito_data:/var/lib/mysql
+    networks:
+      - tienda-electrodomesticos
+
+  db-ventas:
+    image: mysql:latest
+    container_name: db-ventas
+    ports:
+      - "3310:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: test123@@
+      MYSQL_USER: juan.sanchez.regueiro
+      MYSQL_PASSWORD: test123@@
+      MYSQL_DATABASE: servicio-ventas
+    volumes:
+      - db_ventas_data:/var/lib/mysql
+    networks:
+      - tienda-electrodomesticos
+
+volumes:
+  db_producto_data:
+  db_carrito_data:
+  db_ventas_data:
+
+networks:
+  tienda-electrodomesticos:
+    driver: bridge # por defecto | se puede omitir el driver bridge
