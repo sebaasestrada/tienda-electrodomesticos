@@ -14,6 +14,8 @@ services:
       - "8090:8090"
     networks:
       - tienda-electrodomesticos
+    depends_on:
+      - eureka-server
 
   api-gateway:
     build: api-gateway
@@ -21,77 +23,104 @@ services:
       - "8443:8443"
     networks:
       - tienda-electrodomesticos
+    depends_on:
+      - eureka-server
+      - config-server
+      - servicio-productos
+      - servicio-carrito-compras
+      - servicio-ventas
 
   servicio-productos:
     build: servicio-productos
+    environment:
+      - DB_URL_PROD=${DB_URL_PRODUCTOS}
     ports:
       - "8080:8080"
     networks:
       - tienda-electrodomesticos
+    depends_on:
+      - db-productos
 
   servicio-carrito-compras:
     build: servicio-carrito-compras
+    environment:
+      - DB_URL_PROD=${DB_URL_CARRITO}
     ports:
       - "8084:8084"
     networks:
       - tienda-electrodomesticos
+    depends_on:
+      - db-carrito
 
-  servicio_ventas:
+  servicio-ventas:
     build: servicio-ventas
+    environment:
+      - DB_URL_PROD=${DB_URL_VENTAS}
     ports:
       - "8087:8087"
     networks:
       - tienda-electrodomesticos
+    depends_on:
+      - db-ventas
 
   db-productos:
-    image: mysql:latest
+    image: mysql:8.4.4
     container_name: db-productos
     ports:
       - "3308:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: test123@@
-      MYSQL_USER: juan.sanchez.regueiro
-      MYSQL_PASSWORD: test123@@
-      MYSQL_DATABASE: servicio-productos
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_USER=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=servicio-productos
     volumes:
       - db_productos_data:/var/lib/mysql
     networks:
-      - tienda_electrodomesticos
+      - tienda-electrodomesticos
+    depends_on:
+      - eureka-server
 
   db-carrito:
-    image: mysql:latest
+    image: mysql:8.4.4
     container_name: db-carrito
     ports:
       - "3309:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: test123@@
-      MYSQL_USER: juan.sanchez.regueiro
-      MYSQL_PASSWORD: test123@@
-      MYSQL_DATABASE: servicio-carrito-compras
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_USER=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=servicio-carrito-compras
     volumes:
       - db_carrito_data:/var/lib/mysql
     networks:
       - tienda-electrodomesticos
+    depends_on:
+      - eureka-server
 
   db-ventas:
-    image: mysql:latest
+    image: mysql:8.4.4
     container_name: db-ventas
     ports:
       - "3310:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: test123@@
-      MYSQL_USER: juan.sanchez.regueiro
-      MYSQL_PASSWORD: test123@@
-      MYSQL_DATABASE: servicio-ventas
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_USER=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=servicio-ventas
     volumes:
       - db_ventas_data:/var/lib/mysql
     networks:
       - tienda-electrodomesticos
+    depends_on:
+      - eureka-server
 
 volumes:
-  db_producto_data:
+  db_productos_data:
+    driver: local
   db_carrito_data:
+    driver: local
   db_ventas_data:
+    driver: local
 
 networks:
   tienda-electrodomesticos:

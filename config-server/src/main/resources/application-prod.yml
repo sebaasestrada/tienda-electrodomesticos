@@ -16,3 +16,8 @@ spring:
           username: ${GIT_USERNAME}
           password: ${GIT_PASSWORD}
 
+# netflix eureka discovery client
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
